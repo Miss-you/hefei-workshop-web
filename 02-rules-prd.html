@@ -260,37 +260,31 @@
                     <span>规则文件模板</span>
                 </div>
                 <div class="code-block">
-<span class="comment"># Project Rules (AI 必须遵守)</span>
-
-<span class="keyword">## Stack</span>
-<span class="string">- Next.js (App Router) + TypeScript</span>
-<span class="string">- Tailwind CSS</span>
-<span class="string">- ESLint enabled</span>
-
-<span class="keyword">## Goals (Workshop scope)</span>
-<span class="string">- Build MiniShop: list -> detail -> cart -> checkout</span>
-<span class="string">- Mobile-first responsive layout with 2 breakpoints</span>
-<span class="string">- Keep it minimal, readable, demo-friendly</span>
-
-<span class="keyword">## Architecture</span>
-<span class="string">- /app: routes only (thin)</span>
-<span class="string">- /components: generic UI components</span>
-<span class="string">- /features: feature-level components</span>
-<span class="string">- /services: data access (mock now, API later)</span>
-<span class="string">- /types: shared types</span>
-
-<span class="keyword">## Coding rules</span>
-<span class="string">- Prefer small, focused components</span>
-<span class="string">- Do not introduce unnecessary dependencies</span>
-<span class="string">- First propose plan + files, then implement</span>
-<span class="string">- Always provide manual verification steps</span>
-
-<span class="keyword">## Quality gate</span>
-<span class="string">- Must run npm run dev without errors</span>
-<span class="string">- Before commit: run lint/typecheck</span>
-
-<span class="keyword">## Git</span>
-<span class="string">- Small commits: feat:, fix:, refactor:, chore:</span>
+<span class="comment"># 项目规则（AI 必须遵守）</span><br><br>
+<span class="keyword">## 技术栈</span><br>
+<span class="string">- Next.js (App Router) + TypeScript</span><br>
+<span class="string">- Tailwind CSS</span><br>
+<span class="string">- ESLint 已启用</span><br><br>
+<span class="keyword">## 目标（Workshop 范围）</span><br>
+<span class="string">- 构建 MiniShop：列表 → 详情 → 购物车 → 结算</span><br>
+<span class="string">- 移动端优先的响应式布局，2 个断点</span><br>
+<span class="string">- 保持精简、可读、适合演示</span><br><br>
+<span class="keyword">## 目录结构</span><br>
+<span class="string">- /app：仅放路由（保持轻量）</span><br>
+<span class="string">- /components：通用 UI 组件</span><br>
+<span class="string">- /features：功能级组件</span><br>
+<span class="string">- /services：数据访问（现在用 mock，以后换 API）</span><br>
+<span class="string">- /types：共享类型定义</span><br><br>
+<span class="keyword">## 编码规范</span><br>
+<span class="string">- 优先使用小而专注的组件</span><br>
+<span class="string">- 不要引入不必要的依赖</span><br>
+<span class="string">- 先给出计划和文件列表，再实现代码</span><br>
+<span class="string">- 始终提供手动验证步骤</span><br><br>
+<span class="keyword">## 质量门禁</span><br>
+<span class="string">- npm run dev 必须无报错运行</span><br>
+<span class="string">- 提交前运行 lint/typecheck</span><br><br>
+<span class="keyword">## Git 提交</span><br>
+<span class="string">- 小步提交：feat:, fix:, refactor:, chore:</span>
                 </div>
             </div>
 
@@ -319,14 +313,12 @@
             <div class="sub-section">
                 <h3>Part 3: 最小 DoD (5 条红线)</h3>
                 <div class="code-block">
-<span class="comment"># docs/DoD.md - 最小交付标准</span>
-
-<span class="keyword">## 红线（必须遵守）</span>
-
-<span class="string">1. 任何需求必须有 AC（验收标准）</span>
-<span class="string">2. 每次变更必须给验证步骤</span>
-<span class="string">3. 不允许引入新依赖（除非讲师允许）</span>
-<span class="string">4. 不允许大改无关文件</span>
+<span class="comment"># docs/DoD.md - 最小交付标准</span><br><br>
+<span class="keyword">## 红线（必须遵守）</span><br><br>
+<span class="string">1. 任何需求必须有 AC（验收标准）</span><br>
+<span class="string">2. 每次变更必须给验证步骤</span><br>
+<span class="string">3. 不允许引入新依赖（除非讲师允许）</span><br>
+<span class="string">4. 不允许大改无关文件</span><br>
 <span class="string">5. 至少一个质量门必须通过（lint/typecheck/test）</span>
                 </div>
             </div>
