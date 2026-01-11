@@ -475,15 +475,13 @@ AC: /cart 页面展示已添加商品，可以调整数量和删除。</div>
             </div>
 
             <div class="code-block">
-<span class="comment">// 典型的客户端组件结构</span>
-<span class="string">"use client";</span>
-
-<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">"react"</span>;
-<span class="keyword">import</span> { useCart } <span class="keyword">from</span> <span class="string">"@/contexts/CartContext"</span>;
-
-<span class="keyword">export default function</span> <span class="string">ProductDetail</span>({ product }) {
-  <span class="keyword">const</span> { addToCart } = useCart();
-  <span class="comment">// ...</span>
+<span class="comment">// 典型的客户端组件结构</span><br>
+<span class="string">"use client";</span><br><br>
+<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">"react"</span>;<br>
+<span class="keyword">import</span> { useCart } <span class="keyword">from</span> <span class="string">"@/contexts/CartContext"</span>;<br><br>
+<span class="keyword">export default function</span> <span class="string">ProductDetail</span>({ product }) {<br>
+&nbsp;&nbsp;<span class="keyword">const</span> { addToCart } = useCart();<br>
+&nbsp;&nbsp;<span class="comment">// ...</span><br>
 }
             </div>
         </section>
