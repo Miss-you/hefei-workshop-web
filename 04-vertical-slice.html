@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 4: Vertical Slice 实现 - AI Coding Workshop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --color-primary: #ffffff;
+            --color-muted: #a0a0a0;
+            --color-accent: #3b82f6;
+            --color-accent-light: #60a5fa;
+            --color-positive: #22c55e;
+            --color-positive-bg: #14532d;
+            --color-negative: #ef4444;
+            --color-negative-bg: #7f1d1d;
+            --color-warning: #f59e0b;
+            --color-warning-bg: #78350f;
+            --color-purple: #a855f7;
+            --color-purple-bg: #3b0764;
+            --color-cyan: #06b6d4;
+            --color-cyan-bg: #164e63;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--color-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 60px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header { text-align: center; margin-bottom: 60px; }
+
+        .step-badge {
+            display: inline-block;
+            background: var(--color-accent);
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .title { font-size: 56px; font-weight: 900; margin-bottom: 20px; }
+        .time-info { font-size: 24px; color: var(--color-muted); }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            border: 2px solid #333;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-icon { font-size: 32px; }
+
+        .goal-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: #fff;
+            padding: 35px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .sub-section {
+            background: #252525;
+            border-radius: 16px;
+            padding: 40px;
+            margin: 30px 0;
+        }
+
+        .sub-section h3 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: var(--color-accent-light);
+        }
+
+        .prompt-card {
+            background: var(--color-purple-bg);
+            border: 2px solid var(--color-purple);
+            border-radius: 16px;
+            padding: 35px;
+            margin: 25px 0;
+        }
+
+        .prompt-card .label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-purple);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .prompt-card .content {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #e9d5ff;
+            white-space: pre-wrap;
+        }
+
+        .code-block {
+            background: #0d1117;
+            color: #e6edf3;
+            padding: 35px;
+            border-radius: 16px;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 18px;
+            overflow-x: auto;
+            margin: 25px 0;
+            line-height: 1.8;
+        }
+
+        .code-block .comment { color: #8b949e; }
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .string { color: #7ee787; }
+
+        .principle-box {
+            background: var(--color-warning-bg);
+            border: 2px solid var(--color-warning);
+            border-radius: 16px;
+            padding: 35px;
+            margin: 25px 0;
+        }
+
+        .principle-box h4 {
+            color: var(--color-warning);
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .principle-box p {
+            color: #fef3c7;
+            font-size: 22px;
+            line-height: 1.7;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px 20px;
+            background: #0d1117;
+            border-radius: 16px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: var(--color-cyan-bg);
+            border: 2px solid var(--color-cyan);
+            border-radius: 12px;
+            padding: 20px 30px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .flow-step .step-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .flow-step .step-route {
+            font-size: 16px;
+            color: var(--color-cyan);
+            margin-top: 8px;
+            font-family: 'SF Mono', monospace;
+        }
+
+        .flow-arrow {
+            font-size: 32px;
+            color: var(--color-cyan);
+        }
+
+        .strategy-card {
+            background: var(--color-cyan-bg);
+            border: 2px solid var(--color-cyan);
+            border-radius: 16px;
+            padding: 35px;
+            margin: 25px 0;
+        }
+
+        .strategy-card h4 {
+            color: var(--color-cyan);
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .strategy-card ul {
+            list-style: none;
+        }
+
+        .strategy-card li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 22px;
+            color: #a5f3fc;
+        }
+
+        .strategy-card li::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: var(--color-cyan);
+            font-weight: bold;
+        }
+
+        .debug-card {
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+            border: 2px solid var(--color-negative);
+            border-radius: 16px;
+            padding: 35px;
+            margin: 25px 0;
+        }
+
+        .debug-card .label {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fca5a5;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .debug-card .content {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #fecaca;
+            white-space: pre-wrap;
+        }
+
+        .pitfall-list {
+            list-style: none;
+            margin: 25px 0;
+        }
+
+        .pitfall-list li {
+            padding: 20px 25px;
+            background: var(--color-negative-bg);
+            border-left: 4px solid var(--color-negative);
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #fecaca;
+        }
+
+        .pitfall-list li strong {
+            color: var(--color-negative);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .compare-card { padding: 35px; border-radius: 16px; }
+        .compare-card.good { background: var(--color-positive-bg); border: 2px solid var(--color-positive); }
+        .compare-card.bad { background: var(--color-negative-bg); border: 2px solid var(--color-negative); }
+
+        .compare-card .label {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .compare-card.good .label { color: var(--color-positive); }
+        .compare-card.bad .label { color: var(--color-negative); }
+        .compare-card ul { margin-left: 25px; font-size: 22px; }
+        .compare-card li { padding: 10px 0; color: #e0e0e0; }
+
+        .checklist {
+            background: var(--color-positive-bg);
+            border: 2px solid var(--color-positive);
+            border-radius: 16px;
+            padding: 35px;
+        }
+
+        .checklist h4 { color: var(--color-positive); font-size: 26px; margin-bottom: 20px; }
+        .checklist ul { list-style: none; }
+        .checklist li {
+            padding: 12px 0;
+            padding-left: 40px;
+            position: relative;
+            font-size: 22px;
+            color: #bbf7d0;
+        }
+        .checklist li::before { content: "[ ]"; position: absolute; left: 0; font-size: 24px; }
+
+        .commit-tag {
+            display: inline-block;
+            background: #0d1117;
+            color: #7ee787;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-family: 'SF Mono', monospace;
+            font-size: 20px;
+            margin-top: 25px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: var(--color-accent);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 22px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover { background: #2563eb; transform: translateY(-3px); }
+        .nav-btn.secondary { background: transparent; border: 2px solid var(--color-accent); color: var(--color-accent); }
+
+        @media screen and (max-width: 1200px) {
+            body { padding: 30px; }
+            .title { font-size: 40px; }
+            .comparison { grid-template-columns: 1fr; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+            .nav-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="step-badge">Step 4 of 7</div>
+            <h1 class="title">Vertical Slice 实现</h1>
+            <p class="time-info">时间：35-70 分钟</p>
+        </header>
+
+        <section class="section">
+            <div class="goal-box">
+                本步目标：打通一条完整用户路径 - 列表 → 详情 → 加入购物车 → 购物车页
+            </div>
+
+            <div class="sub-section">
+                <h3>什么是 Vertical Slice？</h3>
+
+                <div class="principle-box">
+                    <h4>垂直切片原则</h4>
+                    <p>不是先做完所有 UI，再做所有逻辑，而是先打通一条完整的用户路径。这样可以尽早验证架构、尽早发现问题、尽早展示成果。</p>
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="step-name">商品列表</div>
+                        <div class="step-route">/</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-name">商品详情</div>
+                        <div class="step-route">/products/[id]</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-name">加入购物车</div>
+                        <div class="step-route">CartContext</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-name">购物车页</div>
+                        <div class="step-route">/cart</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <span class="section-icon">#</span>
+                <span>实现任务 T1-T4</span>
+            </div>
+
+            <div class="prompt-card">
+                <div class="label">Prompt - T1 商品列表</div>
+                <div class="content">请实现 T1：商品列表页
+
+参考 docs/PLAN.md 中的 T1 定义，实现：
+1. /services/products.ts - mock 商品数据
+2. /types/product.ts - Product 类型
+3. /features/products/ProductCard.tsx - 商品卡片组件
+4. /app/page.tsx - 首页展示商品网格
+
+先给出文件列表和实现计划，确认后再写代码。</div>
+            </div>
+
+            <div class="prompt-card">
+                <div class="label">Prompt - T2 商品详情</div>
+                <div class="content">请实现 T2：商品详情页
+
+参考 docs/PLAN.md 中的 T2 定义，实现：
+1. /app/products/[id]/page.tsx - 详情页路由
+2. /features/products/ProductDetail.tsx - 详情组件
+3. 从列表页点击卡片跳转到详情页
+
+AC: 点击商品卡片能进入 /products/[id] 并展示商品信息。</div>
+            </div>
+
+            <div class="prompt-card">
+                <div class="label">Prompt - T3 购物车功能</div>
+                <div class="content">请实现 T3：购物车功能
+
+参考 docs/PLAN.md 中的 T3 定义，实现：
+1. /types/cart.ts - CartItem 类型
+2. /contexts/CartContext.tsx - 购物车状态管理
+3. 详情页添加"加入购物车"按钮
+
+AC: 在详情页点击"加入购物车"，商品被添加到全局购物车状态。</div>
+            </div>
+
+            <div class="prompt-card">
+                <div class="label">Prompt - T4 购物车页</div>
+                <div class="content">请实现 T4：购物车页面
+
+参考 docs/PLAN.md 中的 T4 定义，实现：
+1. /app/cart/page.tsx - 购物车路由
+2. /features/cart/CartList.tsx - 购物车列表组件
+3. 数量调整 + 删除 + 清空功能
+
+AC: /cart 页面展示已添加商品，可以调整数量和删除。</div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <span class="section-icon">@</span>
+                <span>App Router 简化策略</span>
+            </div>
+
+            <div class="strategy-card">
+                <h4>Workshop 中的简化约定</h4>
+                <ul>
+                    <li>所有组件默认使用 "use client" - 避免 RSC 复杂性</li>
+                    <li>状态管理用 Context + useState - 不引入 Redux/Zustand</li>
+                    <li>数据用 mock - 不涉及真实 API 调用</li>
+                    <li>样式用 Tailwind - 不需要额外 CSS 文件</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+<span class="comment">// 典型的客户端组件结构</span>
+<span class="string">"use client";</span>
+
+<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">"react"</span>;
+<span class="keyword">import</span> { useCart } <span class="keyword">from</span> <span class="string">"@/contexts/CartContext"</span>;
+
+<span class="keyword">export default function</span> <span class="string">ProductDetail</span>({ product }) {
+  <span class="keyword">const</span> { addToCart } = useCart();
+  <span class="comment">// ...</span>
+}
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <span class="section-icon">!</span>
+                <span>Debug 救火指南</span>
+            </div>
+
+            <div class="debug-card">
+                <div class="label">Debug Prompt - 报错修复</div>
+                <div class="content">运行 npm run dev 时出现以下错误：
+
+[粘贴完整错误信息]
+
+请分析原因并修复。只修改必要的文件，不要改动其他代码。</div>
+            </div>
+
+            <div class="debug-card">
+                <div class="label">Debug Prompt - 功能不工作</div>
+                <div class="content">[描述具体现象]，但期望的行为是 [描述期望]。
+
+请检查相关代码，找出问题并修复。给出你的分析过程。</div>
+            </div>
+
+            <div class="sub-section">
+                <h3>常见翻车点预防</h3>
+
+                <ul class="pitfall-list">
+                    <li>
+                        <strong>Server/Client 组件混用错误</strong>
+                        解决：在需要交互的组件顶部加 "use client"
+                    </li>
+                    <li>
+                        <strong>Context 在 Server Component 中使用</strong>
+                        解决：确保使用 Context 的组件是 Client Component
+                    </li>
+                    <li>
+                        <strong>动态路由参数获取方式错误</strong>
+                        解决：App Router 用 params prop，不是 useRouter
+                    </li>
+                    <li>
+                        <strong>图片路径/public 目录问题</strong>
+                        解决：图片放 /public，引用时用 /image.jpg（不带 public）
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <span class="section-icon">*</span>
+                <span>最佳实践 vs 不建议</span>
+            </div>
+
+            <div class="comparison">
+                <div class="compare-card good">
+                    <div class="label">+ 最佳实践</div>
+                    <ul>
+                        <li>一个任务完成后立即测试验收</li>
+                        <li>每个任务完成后 commit</li>
+                        <li>遇到报错立即修复再继续</li>
+                        <li>让 AI 先输出 plan 再写代码</li>
+                        <li>使用 "use client" 简化开发</li>
+                    </ul>
+                </div>
+                <div class="compare-card bad">
+                    <div class="label">- 不建议</div>
+                    <ul>
+                        <li>T1-T4 全部做完才测试</li>
+                        <li>所有功能做完才 commit</li>
+                        <li>积累多个报错一起处理</li>
+                        <li>直接让 AI 输出全部代码</li>
+                        <li>混用 Server/Client 组件</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <span class="section-icon">[?]</span>
+                <span>验收清单</span>
+            </div>
+
+            <div class="checklist">
+                <h4>完成 Step 4 需要满足：</h4>
+                <ul>
+                    <li>首页 (/) 展示商品列表网格</li>
+                    <li>点击商品卡片进入详情页 (/products/[id])</li>
+                    <li>详情页有"加入购物车"按钮且功能正常</li>
+                    <li>购物车页 (/cart) 展示已添加商品</li>
+                    <li>可以调整数量、删除商品、清空购物车</li>
+                    <li>npm run dev 无报错</li>
+                </ul>
+            </div>
+
+            <div class="commit-tag">
+                Checkpoint Commit: feat: vertical slice products and cart
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <a href="03-plan.html" class="nav-btn secondary">← Step 3: PLAN 任务拆解</a>
+            <a href="05-checkout-responsive.html" class="nav-btn">下一步：结算 + 响应式 →</a>
+        </div>
+    </div>
+</body>
+</html>

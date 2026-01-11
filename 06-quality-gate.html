@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 6: 质量门禁</title>
+    <style>
+        :root {
+            --color-accent: #3b82f6;
+            --color-positive: #22c55e;
+            --color-negative: #ef4444;
+            --color-warning: #f59e0b;
+            --color-purple: #a855f7;
+            --bg-page: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            padding: 60px;
+            line-height: 1.6;
+            font-size: 22px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step-badge {
+            display: inline-block;
+            background: var(--color-accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .objective {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--color-accent);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+
+        .objective-label {
+            color: var(--color-accent);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .objective-text {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 50px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .gate-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .gate-card {
+            background: var(--bg-page);
+            border-radius: 12px;
+            padding: 30px;
+            border: 2px solid var(--border-color);
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .gate-card:hover {
+            border-color: var(--color-accent);
+        }
+
+        .gate-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .gate-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .gate-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .gate-command {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 16px;
+            background: var(--bg-card);
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: var(--color-accent);
+        }
+
+        .flow-section {
+            margin: 30px 0;
+        }
+
+        .flow-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--color-warning);
+        }
+
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .flow-step {
+            flex: 1;
+            background: var(--bg-page);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .flow-step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .flow-step-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .flow-step-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .flow-arrow {
+            font-size: 28px;
+            color: var(--color-accent);
+            flex-shrink: 0;
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .code-block code {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 18px;
+            color: #e6edf3;
+            line-height: 1.8;
+        }
+
+        .code-block .comment {
+            color: #8b949e;
+        }
+
+        .code-block .error {
+            color: var(--color-negative);
+        }
+
+        .code-block .success {
+            color: var(--color-positive);
+        }
+
+        .prompt-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid var(--color-purple);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .prompt-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-purple);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .prompt-text {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 18px;
+            color: var(--text-primary);
+            background: var(--bg-page);
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .dod-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--color-positive);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .dod-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-positive);
+            margin-bottom: 20px;
+        }
+
+        .dod-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .dod-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .dod-check {
+            color: var(--color-positive);
+            font-size: 20px;
+        }
+
+        .principle-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--color-accent);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .principle-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 15px;
+        }
+
+        .principle-text {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .practices-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .practice-card {
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .practice-card.positive {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--color-positive);
+        }
+
+        .practice-card.negative {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--color-negative);
+        }
+
+        .practice-header {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .practice-card.positive .practice-header {
+            color: var(--color-positive);
+        }
+
+        .practice-card.negative .practice-header {
+            color: var(--color-negative);
+        }
+
+        .practice-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .practice-list li {
+            padding: 10px 0;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            font-size: 22px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--color-positive);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .commit-block {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid var(--color-positive);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .commit-label {
+            color: var(--color-positive);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .commit-command {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 20px;
+            color: var(--text-primary);
+            background: var(--bg-page);
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="step-badge">Step 6 of 7</div>
+        <h1>质量门禁</h1>
+        <div class="time-badge">85-105 分钟</div>
+
+        <div class="objective">
+            <div class="objective-label">本节目标</div>
+            <div class="objective-text">让 AI 写的代码通过至少一个质量检查</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">选择一个质量门（三选一）</div>
+            <div class="gate-options">
+                <div class="gate-card">
+                    <div class="gate-icon">ESLint</div>
+                    <div class="gate-name">ESLint</div>
+                    <div class="gate-desc">代码风格和潜在问题检查</div>
+                    <div class="gate-command">npm run lint</div>
+                </div>
+                <div class="gate-card">
+                    <div class="gate-icon">TS</div>
+                    <div class="gate-name">TypeCheck</div>
+                    <div class="gate-desc">TypeScript 类型检查</div>
+                    <div class="gate-command">npm run typecheck</div>
+                </div>
+                <div class="gate-card">
+                    <div class="gate-icon">Test</div>
+                    <div class="gate-name">Unit Test</div>
+                    <div class="gate-desc">单元测试覆盖</div>
+                    <div class="gate-command">npm run test</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">闭环流程演示</div>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-step-number">1</div>
+                    <div class="flow-step-title">引入错误</div>
+                    <div class="flow-step-desc">故意写错代码</div>
+                </div>
+                <div class="flow-arrow">-></div>
+                <div class="flow-step">
+                    <div class="flow-step-number">2</div>
+                    <div class="flow-step-title">检查失败</div>
+                    <div class="flow-step-desc">运行质量命令</div>
+                </div>
+                <div class="flow-arrow">-></div>
+                <div class="flow-step">
+                    <div class="flow-step-number">3</div>
+                    <div class="flow-step-title">AI 修复</div>
+                    <div class="flow-step-desc">让 AI 处理错误</div>
+                </div>
+                <div class="flow-arrow">-></div>
+                <div class="flow-step">
+                    <div class="flow-step-number">4</div>
+                    <div class="flow-step-title">检查通过</div>
+                    <div class="flow-step-desc">验证修复成功</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <code>
+<span class="comment"># Step 1: 故意引入错误（例如未使用的变量）</span><br>
+const unusedVar = "test";<br><br>
+<span class="comment"># Step 2: 运行检查，看到失败</span><br>
+$ npm run lint<br>
+<span class="error">error: 'unusedVar' is defined but never used</span><br><br>
+<span class="comment"># Step 3: 让 AI 修复（见下方 Prompt）</span><br><br>
+<span class="comment"># Step 4: 再次运行，检查通过</span><br>
+$ npm run lint<br>
+<span class="success">All checks passed!</span>
+                </code>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">AI 修复 Prompt</div>
+            <div class="prompt-card">
+                <div class="prompt-label">
+                    <span>Prompt</span>
+                    <span>让 AI 修复质量问题</span>
+                </div>
+                <div class="prompt-text">
+运行 `npm run lint` 出现以下错误：<br><br>
+[粘贴错误信息]<br><br>
+请修复这些问题，确保：<br>
+1. 保持原有功能不变<br>
+2. 遵循项目代码规范<br>
+3. 修复后能通过检查
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">补齐完整 DoD</div>
+            <div class="dod-box">
+                <div class="dod-title">Definition of Done 清单</div>
+                <ul class="dod-list">
+                    <li><span class="dod-check">+</span>功能完整可用</li>
+                    <li><span class="dod-check">+</span>ESLint 检查通过</li>
+                    <li><span class="dod-check">+</span>TypeScript 编译通过</li>
+                    <li><span class="dod-check">+</span>单元测试通过</li>
+                    <li><span class="dod-check">+</span>代码已 Review</li>
+                    <li><span class="dod-check">+</span>文档已更新</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="principle-box">
+                <div class="principle-title">原理：为什么需要质量门禁？</div>
+                <div class="principle-text">
+                    <strong>AI 代码不可盲信</strong>：生成的代码可能有类型错误、风格问题或逻辑漏洞。<br><br>
+                    <strong>自动化防护</strong>：质量门禁是最后一道防线，防止问题代码进入主分支。<br><br>
+                    <strong>快速反馈循环</strong>：发现问题 -> AI 修复 -> 验证通过，形成高效迭代。<br><br>
+                    <strong>团队标准一致</strong>：无论谁写的代码（人或 AI），都必须通过相同检查。
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">最佳实践 vs 不建议</div>
+            <div class="practices-grid">
+                <div class="practice-card positive">
+                    <div class="practice-header">最佳实践</div>
+                    <ul class="practice-list">
+                        <li>提交前先跑质量检查</li>
+                        <li>把错误信息完整给 AI</li>
+                        <li>理解 AI 的修复方案</li>
+                        <li>CI 中强制质量门禁</li>
+                        <li>逐步增加检查项目</li>
+                    </ul>
+                </div>
+                <div class="practice-card negative">
+                    <div class="practice-header">不建议</div>
+                    <ul class="practice-list">
+                        <li>忽略警告直接提交</li>
+                        <li>禁用规则绕过检查</li>
+                        <li>不验证 AI 的修复</li>
+                        <li>只在本地跑检查</li>
+                        <li>一次添加太多规则</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">验收清单</div>
+            <ul class="checklist">
+                <li><span class="checkbox"></span>选择并配置了至少一个质量门</li>
+                <li><span class="checkbox"></span>成功演示了错误 -> 修复 -> 通过的闭环</li>
+                <li><span class="checkbox"></span>AI 能根据错误信息修复问题</li>
+                <li><span class="checkbox"></span>最终质量检查全部通过</li>
+                <li><span class="checkbox"></span>理解了质量门禁的重要性</li>
+            </ul>
+        </div>
+
+        <div class="commit-block">
+            <div class="commit-label">Checkpoint Commit</div>
+            <div class="commit-command">git commit -m "chore: quality gate and dod"</div>
+        </div>
+    </div>
+</body>
+</html>

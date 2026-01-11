@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 5: Checkout + 响应式适配</title>
+    <style>
+        :root {
+            --color-accent: #3b82f6;
+            --color-positive: #22c55e;
+            --color-negative: #ef4444;
+            --color-warning: #f59e0b;
+            --color-purple: #a855f7;
+            --bg-page: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            padding: 60px;
+            line-height: 1.6;
+            font-size: 22px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step-badge {
+            display: inline-block;
+            background: var(--color-accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .objective {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--color-accent);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+
+        .objective-label {
+            color: var(--color-accent);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .objective-text {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 50px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .part-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .part-card {
+            background: var(--bg-page);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .part-number {
+            color: var(--color-accent);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .part-title {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .part-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .part-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .part-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 20px;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-page);
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .code-block code {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 18px;
+            color: #e6edf3;
+            line-height: 1.8;
+        }
+
+        .code-block .comment {
+            color: #8b949e;
+        }
+
+        .code-block .keyword {
+            color: #ff7b72;
+        }
+
+        .code-block .string {
+            color: #a5d6ff;
+        }
+
+        .code-block .class {
+            color: #7ee787;
+        }
+
+        .prompt-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid var(--color-purple);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .prompt-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-purple);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .prompt-text {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 18px;
+            color: var(--text-primary);
+            background: var(--bg-page);
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .principle-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--color-accent);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .principle-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 15px;
+        }
+
+        .principle-text {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .practices-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .practice-card {
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .practice-card.positive {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--color-positive);
+        }
+
+        .practice-card.negative {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--color-negative);
+        }
+
+        .practice-header {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .practice-card.positive .practice-header {
+            color: var(--color-positive);
+        }
+
+        .practice-card.negative .practice-header {
+            color: var(--color-negative);
+        }
+
+        .practice-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .practice-list li {
+            padding: 10px 0;
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            font-size: 22px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--color-positive);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .commit-block {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid var(--color-positive);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .commit-label {
+            color: var(--color-positive);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .commit-command {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 20px;
+            color: var(--text-primary);
+            background: var(--bg-page);
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="step-badge">Step 5 of 7</div>
+        <h1>Checkout + 响应式适配</h1>
+        <div class="time-badge">70-85 分钟</div>
+
+        <div class="objective">
+            <div class="objective-label">本节目标</div>
+            <div class="objective-text">完成假结算页 + 移动端优先的响应式布局</div>
+        </div>
+
+        <div class="part-grid">
+            <div class="part-card">
+                <div class="part-number">Part 1</div>
+                <div class="part-title">假结算页</div>
+                <ul class="part-list">
+                    <li>订单摘要卡片</li>
+                    <li>商品列表展示</li>
+                    <li>总价计算显示</li>
+                    <li>结算按钮</li>
+                </ul>
+            </div>
+            <div class="part-card">
+                <div class="part-number">Part 2</div>
+                <div class="part-title">移动端优先适配</div>
+                <ul class="part-list">
+                    <li>响应式断点设计</li>
+                    <li>Tailwind 响应式类</li>
+                    <li>布局自适应</li>
+                    <li>触控友好设计</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">断点策略</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>断点</th>
+                        <th>宽度</th>
+                        <th>布局</th>
+                        <th>典型设备</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>默认</td>
+                        <td>&lt; 640px</td>
+                        <td>单列布局</td>
+                        <td>手机</td>
+                    </tr>
+                    <tr>
+                        <td>sm</td>
+                        <td>&ge; 640px</td>
+                        <td>双列布局</td>
+                        <td>平板竖屏</td>
+                    </tr>
+                    <tr>
+                        <td>lg</td>
+                        <td>&ge; 1024px</td>
+                        <td>多列布局</td>
+                        <td>桌面端</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Tailwind 响应式示例</div>
+            <div class="code-block">
+                <code>
+<span class="comment">&lt;!-- 商品网格：移动端单列，平板双列，桌面四列 --&gt;</span><br>
+&lt;div class="<span class="string">grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4</span>"&gt;<br>
+&nbsp;&nbsp;&lt;ProductCard /&gt;<br>
+&lt;/div&gt;<br><br>
+<span class="comment">&lt;!-- 结算页布局：移动端堆叠，桌面端并排 --&gt;</span><br>
+&lt;div class="<span class="string">flex flex-col lg:flex-row gap-6</span>"&gt;<br>
+&nbsp;&nbsp;&lt;div class="<span class="string">w-full lg:w-2/3</span>"&gt;购物车列表&lt;/div&gt;<br>
+&nbsp;&nbsp;&lt;div class="<span class="string">w-full lg:w-1/3</span>"&gt;订单摘要&lt;/div&gt;<br>
+&lt;/div&gt;
+                </code>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">AI Prompt</div>
+            <div class="prompt-card">
+                <div class="prompt-label">
+                    <span>Prompt</span>
+                    <span>响应式改造</span>
+                </div>
+                <div class="prompt-text">
+请为购物车和结算页添加响应式布局：<br><br>
+1. 移动端优先策略<br>
+2. 断点：默认(手机) -> sm:640px(平板) -> lg:1024px(桌面)<br>
+3. 商品网格：1列 -> 2列 -> 4列<br>
+4. 结算页：堆叠布局 -> 并排布局<br>
+5. 按钮和表单元素触控友好（最小 44px）
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="principle-box">
+                <div class="principle-title">原理：为什么是移动端优先？</div>
+                <div class="principle-text">
+                    <strong>渐进增强</strong>：从最小屏幕开始，逐步添加复杂布局，确保基础体验可用。<br><br>
+                    <strong>代码更简洁</strong>：基础样式无前缀，只在需要时添加响应式类。<br><br>
+                    <strong>性能更好</strong>：移动端不加载桌面端的复杂样式，CSS 解析更快。<br><br>
+                    <strong>符合用户习惯</strong>：移动流量占比超过 60%，优先保证主要用户体验。
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">最佳实践 vs 不建议</div>
+            <div class="practices-grid">
+                <div class="practice-card positive">
+                    <div class="practice-header">最佳实践</div>
+                    <ul class="practice-list">
+                        <li>移动端优先，逐步增强</li>
+                        <li>使用 Tailwind 断点前缀</li>
+                        <li>测试真实设备效果</li>
+                        <li>触控目标至少 44px</li>
+                        <li>图片使用响应式尺寸</li>
+                    </ul>
+                </div>
+                <div class="practice-card negative">
+                    <div class="practice-header">不建议</div>
+                    <ul class="practice-list">
+                        <li>桌面优先然后隐藏元素</li>
+                        <li>硬编码固定宽度</li>
+                        <li>只在浏览器模拟测试</li>
+                        <li>按钮太小难以点击</li>
+                        <li>忽略横屏模式</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">验收清单</div>
+            <ul class="checklist">
+                <li><span class="checkbox"></span>结算页显示订单摘要和总价</li>
+                <li><span class="checkbox"></span>移动端（&lt; 640px）单列布局正常</li>
+                <li><span class="checkbox"></span>平板端（&ge; 640px）双列布局正常</li>
+                <li><span class="checkbox"></span>桌面端（&ge; 1024px）多列布局正常</li>
+                <li><span class="checkbox"></span>所有按钮触控友好</li>
+            </ul>
+        </div>
+
+        <div class="commit-block">
+            <div class="commit-label">Checkpoint Commit</div>
+            <div class="commit-command">git commit -m "feat: checkout and responsive baseline"</div>
+        </div>
+    </div>
+</body>
+</html>

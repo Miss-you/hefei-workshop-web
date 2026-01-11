@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Coding Workshop - 学习指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --color-primary: #ffffff;
+            --color-muted: #a0a0a0;
+            --color-accent: #3b82f6;
+            --color-accent-light: #60a5fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--color-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 60px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: #fff;
+            padding: 80px 60px;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 28px;
+            opacity: 0.9;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 20px;
+            margin-top: 30px;
+            font-weight: 600;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 2px solid #333;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--color-accent);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.3);
+        }
+
+        .card.overview {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 2px solid var(--color-accent);
+        }
+
+        .card-step {
+            display: inline-block;
+            background: var(--color-accent);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .card-desc {
+            font-size: 22px;
+            color: var(--color-muted);
+            margin-bottom: 20px;
+        }
+
+        .card-time {
+            font-size: 20px;
+            color: var(--color-accent-light);
+            font-weight: 600;
+        }
+
+        .card-arrow {
+            float: right;
+            font-size: 32px;
+            color: var(--color-accent);
+            margin-top: -50px;
+        }
+
+        .info-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 50px;
+            border: 2px solid #333;
+            margin-bottom: 50px;
+        }
+
+        .info-section h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-section h2 .icon {
+            width: 50px;
+            height: 50px;
+            background: var(--color-accent);
+            color: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .deliverable {
+            background: #252525;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .deliverable .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .deliverable .name {
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--color-muted);
+            font-size: 20px;
+        }
+
+        @media screen and (max-width: 1200px) {
+            body { padding: 30px; }
+            .hero h1 { font-size: 48px; }
+            .hero p { font-size: 22px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .card.overview { grid-column: span 1; }
+            .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>AI Coding Workshop</h1>
+            <p>2 小时掌握 AI 参与交付的工程化方法</p>
+            <div class="badge">MiniShop 实战项目</div>
+        </div>
+
+        <div class="card-grid">
+            <a href="00-overview.html" class="card overview">
+                <div class="card-step">START</div>
+                <div class="card-title">Workshop 总览</div>
+                <div class="card-desc">整体目标、时间线、交付物概览</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="01-preflight.html" class="card">
+                <div class="card-step">Step 1</div>
+                <div class="card-title">Preflight</div>
+                <div class="card-desc">环境检查 + 成果展示</div>
+                <div class="card-time">0-10 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="02-rules-prd.html" class="card">
+                <div class="card-step">Step 2</div>
+                <div class="card-title">规则 + PRD</div>
+                <div class="card-desc">AI 约束 + 可验收需求</div>
+                <div class="card-time">10-25 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="03-plan.html" class="card">
+                <div class="card-step">Step 3</div>
+                <div class="card-title">PLAN 任务拆解</div>
+                <div class="card-desc">PRD → T1-T4 可执行任务</div>
+                <div class="card-time">25-35 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="04-vertical-slice.html" class="card">
+                <div class="card-step">Step 4</div>
+                <div class="card-title">Vertical Slice</div>
+                <div class="card-desc">列表 → 详情 → 购物车</div>
+                <div class="card-time">35-70 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="05-checkout-responsive.html" class="card">
+                <div class="card-step">Step 5</div>
+                <div class="card-title">Checkout + 响应式</div>
+                <div class="card-desc">假结算 + 移动端适配</div>
+                <div class="card-time">70-85 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="06-quality-gate.html" class="card">
+                <div class="card-step">Step 6</div>
+                <div class="card-title">质量门禁</div>
+                <div class="card-desc">Lint/TypeCheck + AI 修复</div>
+                <div class="card-time">85-105 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <a href="07-collaboration.html" class="card">
+                <div class="card-step">Step 7</div>
+                <div class="card-title">协作与总结</div>
+                <div class="card-desc">分支策略 + 方法迁移</div>
+                <div class="card-time">105-120 min</div>
+                <div class="card-arrow">→</div>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h2>
+                <span class="icon">📦</span>
+                Workshop 交付物
+            </h2>
+            <div class="deliverables-grid">
+                <div class="deliverable">
+                    <div class="icon">📋</div>
+                    <div class="name">docs/PRD.md</div>
+                </div>
+                <div class="deliverable">
+                    <div class="icon">📝</div>
+                    <div class="name">docs/PLAN.md</div>
+                </div>
+                <div class="deliverable">
+                    <div class="icon">✅</div>
+                    <div class="name">docs/DoD.md</div>
+                </div>
+                <div class="deliverable">
+                    <div class="icon">⚙️</div>
+                    <div class="name">CLAUDE.md</div>
+                </div>
+                <div class="deliverable">
+                    <div class="icon">🛒</div>
+                    <div class="name">MiniShop App</div>
+                </div>
+                <div class="deliverable">
+                    <div class="icon">📦</div>
+                    <div class="name">Git Commits</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            AI Coding Workshop | 2 Hours | MiniShop Project
+        </div>
+    </div>
+</body>
+</html>
